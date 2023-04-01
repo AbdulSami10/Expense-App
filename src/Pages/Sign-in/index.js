@@ -5,6 +5,7 @@ const SignInPage = () => {
   return (
     <>
       <SignInForm />
+      <a href="/sign-out">create an account</a>
     </>
   );
 };
