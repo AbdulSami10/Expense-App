@@ -6,12 +6,14 @@ import { uid } from "uid";
 const Expense = () => {
   const uidd = uid();
   const [data, setData] = useState([]);
-  // const [value, setValue] = useState([]);
+  // const [loading, setLoading] = useState(false);
 
   const [expense, setExpense] = useState([
     {
       description: "",
       value: 0,
+      date: "",
+      valueType: "",
     },
   ]);
   const handleChange = (e) => {
@@ -53,18 +55,23 @@ const Expense = () => {
     set(ref(dataBase, `${auth.currentUser.uid}/${uidd}`), {
       description: expense.description,
       value: expense.value,
+      date: expense.date,
+      valueType: expense.valueType,
       uid: uidd,
     });
+    console.log(expense);
     setExpense({
-      id: 1,
       description: "",
       value: 0,
+      valueType: "",
+      date: "",
     });
   };
 
   return (
     <>
-      <p>{value}</p>
+      <h1>Balance In Account:{value}</h1>
+
       <form>
         <input
           type="text"
@@ -78,6 +85,24 @@ const Expense = () => {
           onChange={handleChange}
           value={expense.value}
         />
+
+        <select
+          name="valueType"
+          onChange={handleChange}
+          value={expense.valueType}
+        >
+          <option value=""></option>
+          <option value="cash">Cash</option>
+          <option value="e-wallet">E-Wallet</option>
+          <option value="bankAccount">Bank Account</option>
+        </select>
+
+        <input
+          type="date"
+          name="date"
+          onChange={handleChange}
+          value={expense.date}
+        />
         <button type="submit" onClick={handleSubmit}>
           Submit
         </button>
@@ -85,10 +110,12 @@ const Expense = () => {
       <ol>
         {data.map((data) => {
           return (
-            <li key={data.id}>
+            <li key={data.uid}>
               <ul>
                 <li>{data.description}</li>
-                <li>{data.value}$</li>
+                <li>{data.value}rs</li>
+                <li>{data.date}</li>
+                <li>{data.valueType}</li>
               </ul>
             </li>
           );
